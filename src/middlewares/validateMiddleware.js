@@ -3,11 +3,16 @@ const validate = (schema, imageOptional = false) => async (req, res, next) => {
     try {
         const dataToValidate = {
             ...req.body,
-            image: req.file ? req.file.path : req.body.image
+            image: req.file ? req.file.path : req.body.image,
+            policiesDoc: req.file ? req.file.path : req.body.policiesDoc
         };
 
         if (imageOptional && !dataToValidate.image) {
             delete dataToValidate.image;
+        }
+
+        if (imageOptional && !dataToValidate.policiesDoc) {
+            delete dataToValidate.policiesDoc;
         }
         const parsedData = await schema.parseAsync(dataToValidate);
         req.body = parsedData;
