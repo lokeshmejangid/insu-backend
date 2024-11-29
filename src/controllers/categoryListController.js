@@ -1,17 +1,17 @@
 const CategoryList = require("../models/categoryListModel");
 
-const generateCatId = async () => {
-    const policies = await CategoryList.find().sort({ createdAt: -1 }).limit(1);
-    const idNum = Number(policies[0].code.split('-')[1]);
-    console.log(idNum);
+// const generateCatId = async () => {
+//     const policies = await CategoryList.find().sort({ createdAt: -1 }).limit(1);
+//     const idNum = Number(policies[0].code.split('-')[1]);
+//     console.log(idNum);
     
-    const today = new Date();
-    const yy = today.getFullYear();
-    const mm = today.getMonth() + 1;
-    let formattedCounter = idNum.toString().padStart(5, '0');
-    console.log(yy + "" + mm + "-" + formattedCounter);
-    return yy + "" + mm + "-" + formattedCounter
-}
+//     const today = new Date();
+//     const yy = today.getFullYear();
+//     const mm = today.getMonth() + 1;
+//     let formattedCounter = idNum.toString().padStart(5, '0');
+//     console.log(yy + "" + mm + "-" + formattedCounter);
+//     return yy + "" + mm + "-" + formattedCounter
+// }
 
 
 const addCategoryList = async (req, res) => {

@@ -8,7 +8,7 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/testimonial')
+        cb(null, './uploads/policies-doc')
     },
     filename: (req, file, cb) => {
         const extension = file.originalname.split('.');
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith('policies-doc/')) {
+    if (file.mimetype.startsWith('image/')) {
         cb(null, true);
     } else {
         cb(new Error('Invalid file type'), false);
@@ -33,9 +33,9 @@ const upload = multer({
 })
 
 
-policiesListRouter.route('/add').post( validate(policiesListSchema), policiesListController.addPoliciesList);
-policiesListRouter.route('/get').get(policiesListController.getPoliciesList);
+policiesListRouter.route('/add').post(upload.single('policiesDoc'), validate(policiesListSchema), policiesListController.addPoliciesList);
+policiesListRouter.route('/all').get(policiesListController.getPoliciesList);
 policiesListRouter.route('/del/:id').delete(policiesListController.delPoliciesList);
-policiesListRouter.route('/edit/:id').put( validate(policiesListSchema), policiesListController.editPoliciesList);
+policiesListRouter.route('/update/:id').put(upload.single('policiesDoc'), validate(policiesListSchema), policiesListController.editPoliciesList);
 
 module.exports = policiesListRouter;

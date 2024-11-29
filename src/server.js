@@ -8,7 +8,7 @@ const cors = require("cors");
 const CXN = require('./config/dbConfig');
 const authRouter = require("./routes/authRouter");
 const categoryListRouter = require("./routes/categoryListRouter");
-// const policiesListRouter = require("./routes/policiesListRouter");n
+const policiesListRouter = require("./routes/policiesListRouter");
 
 const corOptions = {
     origin: "*",
@@ -24,7 +24,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use('/api/auth', authRouter);
 server.use('/api/category', categoryListRouter);
-// server.use('/api/policies-list', policiesListRouter);
+server.use('/api/policies-list', policiesListRouter);
 
 
 
