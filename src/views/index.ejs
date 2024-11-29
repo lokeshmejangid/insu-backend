@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+</head>
+
+<body>
+    <h1>File Upload Page</h1>
+    <form action="http://localhost:9000/api/product/upload" method="post" enctype="multipart/form-data">
+        <label>image</label><br />
+        <input type="file" name="image" accept="image/jpeg, image/png, image/webp, image/jpg, image/svg"><br /><br />
+        <label>title</label><br />
+        <input type="text" name="title"><br /><br />
+        <label>rating</label><br />
+        <input type="text" name="rating"><br /><br />
+        <label>demoLink</label><br />
+        <input type="text" name="demoLink"><br /><br />
+        <button type="submit">Upload</button>
+    </form>
+</body>
+
+</html>
