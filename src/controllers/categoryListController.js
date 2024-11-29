@@ -18,7 +18,7 @@ const addCategoryList = async (req, res) => {
     try {
         const { name, desc, status } = req.body;
         const createCategoryList = await CategoryList.create({ name, desc, status });
-        return res.status(201).json({ mesage: "New CategoryList Information Added", categoryListInformation: createCategoryList });
+        return res.status(201).json({ mesage: "New CategoryList Information Added", date: createCategoryList });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
@@ -27,8 +27,8 @@ const addCategoryList = async (req, res) => {
 
 const getCategoryList = async (req, res) => {
     try {
-        const categoryListInformation = await CategoryList.find();
-        return res.status(200).json({ mesage: "Get All CategoryList Information", categoryListInformation: categoryListInformation });
+        const date = await CategoryList.find();
+        return res.status(200).json({ mesage: "Get All CategoryList Information", date: date });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
@@ -41,7 +41,7 @@ const delCategoryList = async (req, res) => {
         const existInformation = await CategoryList.findById(id);
         if (!existInformation) return res.status(400).json({ mesage: "CategoryList Information Not Exist" });
         const deletedInformation = await CategoryList.findByIdAndDelete(id);
-        return res.status(200).json({ mesage: "Delete CategoryList Information", categoryListInformation: deletedInformation });
+        return res.status(200).json({ mesage: "Delete CategoryList Information", date: deletedInformation });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
@@ -55,7 +55,7 @@ const editCategoryList = async (req, res) => {
         const existInformation = await CategoryList.findById(id);
         if (!existInformation) return res.status(400).json({ mesage: "CategoryList Information Not Exist" });
         const editInformation = await CategoryList.findByIdAndUpdate(id, { name, desc, status }, { new: true });
-        return res.status(200).json({ mesage: "Update CategoryList Information", categoryListInformation: editInformation });
+        return res.status(200).json({ mesage: "Update CategoryList Information", date: editInformation });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
