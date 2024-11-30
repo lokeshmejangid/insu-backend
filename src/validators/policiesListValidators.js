@@ -5,7 +5,7 @@ const policiesListSchema = z.object({
     cost: z.number(),
     duration: z.string().trim().max(100, "duration max 100 characters long"),
     category: z.number(),
-    desc: z.string().trim().optional(),
+    description: z.string().trim().optional(),
     status: z.boolean(),
     policiesDoc: z.string().trim().max(100, "policiesDoc max 100 characters long")
 })

@@ -9,6 +9,7 @@ const CXN = require('./config/dbConfig');
 const authRouter = require("./routes/authRouter");
 const categoryListRouter = require("./routes/categoryListRouter");
 const policiesListRouter = require("./routes/policiesListRouter");
+const clientListRouter = require("./routes/clientListRouter");
 
 const corOptions = {
     origin: "*",
@@ -24,7 +25,8 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use('/api/auth', authRouter);
 server.use('/api/category', categoryListRouter);
-server.use('/api/policies-list', policiesListRouter);
+server.use('/api/policies', policiesListRouter);
+server.use('/api/client', clientListRouter);
 
 
 

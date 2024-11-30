@@ -14,13 +14,13 @@ const generateCatId = async () => {
 
 const addPoliciesList = async (req, res) => {
     try {
-        const { name, cost, duration, category, desc, status } = req.body;
+        const { name, cost, duration, category, description, status } = req.body;
         const polociesCode = await generateCatId();
         
         if (req.file) {
             const policiesDoc = req.file.path;
-            const createPoliciesList = await PoliciesList.create({ policiesDoc, code: polociesCode, name, cost, duration, category, desc, status });
-            return res.status(201).json({ mesage: "New PoliciesList Information Added", policiesListInformation: createPoliciesList });
+            const createPoliciesList = await PoliciesList.create({ policiesDoc, code: polociesCode, name, cost, duration, category, description, status });
+            return res.status(201).json({ mesage: "New PoliciesList Information Added", data: createPoliciesList });
         } else {
             return res.status(400).json({ message: 'Please Select An policiesDoc From Your Device' })
         }
@@ -37,8 +37,8 @@ const addPoliciesList = async (req, res) => {
 
 const getPoliciesList = async (req, res) => {
     try {
-        const policiesListInformation = await PoliciesList.find();
-        return res.status(200).json({ mesage: "Get All PoliciesList Information", policiesListInformation: policiesListInformation });
+        const data = await PoliciesList.find();
+        return res.status(200).json({ mesage: "Get All PoliciesList Information", data: data });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
@@ -54,7 +54,7 @@ const delPoliciesList = async (req, res) => {
             if (err) return res.status(500).json({ message: "Failed to delete file from server", error: err.message });
         })
         const deletedInformation = await PoliciesList.findByIdAndDelete(id);
-        return res.status(200).json({ mesage: "Delete PoliciesList Information", policiesListInformation: deletedInformation });
+        return res.status(200).json({ mesage: "Delete PoliciesList Information", data: deletedInformation });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
@@ -73,15 +73,15 @@ const editPoliciesList = async (req, res) => {
             }
             return res.status(400).json({ mesage: "PoliciesList Information Not Exist" });
         }
-        const { name, cost, duration, category, desc, status } = req.body;
+        const { name, cost, duration, category, description, status } = req.body;
         const policiesDoc = req.file ? req.file.path : req.body.policiesDoc;
         if (req.file) {
             fs.unlink(existInformation.policiesDoc, (err) => {
                 if (err) return res.status(500).json({ message: "Failed to delete file from server", error: err.message });
             })
         } else if (policiesDoc !== existInformation.policiesDoc) return res.status(400).json({ message: "Please Select An policiesDoc From Your Device" })
-        const editInformation = await PoliciesList.findByIdAndUpdate(id, { policiesDoc, code: existInformation.code, name, cost, duration, category, desc, status }, { new: true });
-        return res.status(200).json({ mesage: "Update PoliciesList Information", policiesListInformation: editInformation });
+        const editInformation = await PoliciesList.findByIdAndUpdate(id, { policiesDoc, code: existInformation.code, name, cost, duration, category, description, status }, { new: true });
+        return res.status(200).json({ mesage: "Update PoliciesList Information", data: editInformation });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });

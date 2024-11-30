@@ -21,7 +21,7 @@ const policiesListSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    desc: {
+    description: {
         type: String,
         required: false
     },
