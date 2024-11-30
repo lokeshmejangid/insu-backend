@@ -37,11 +37,11 @@ const getInsurance = async (req, res) => {
             for (const value of data) {
                 let newDoc = { ...value._doc };
                 var client_id = new mongoose.Types.ObjectId(value.clientId);
-                const category = await ClientList.findById(client_id);
+                const client = await ClientList.findById(client_id);
                 var policy_id = new mongoose.Types.ObjectId(value.insurancePolicyId);                
                 const policy = await PoliciesList.findById(policy_id);
-                if (category) {
-                    newDoc.category = { ...category._doc };
+                if (client) {
+                    newDoc.client = { ...client._doc };
                 }
                 if (policy) {
                     newDoc.policy = { ...policy._doc };
