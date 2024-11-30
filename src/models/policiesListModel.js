@@ -17,8 +17,8 @@ const policiesListSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    category: {
-        type: Number,
+    category_id: {
+        type: String,
         required: true
     },
     description: {
