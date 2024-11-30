@@ -1,7 +1,5 @@
-const CategoryList = require("../models/categoryListModel");
 const PoliciesList = require("../models/policiesListModel");
 const fs = require('fs');
-var mongoose = require('mongoose');
 
 const generateCatId = async () => {
     const policies = await PoliciesList.find().sort({ createdAt: -1 }).limit(1);
@@ -16,10 +14,10 @@ const generateCatId = async () => {
 
 const addPoliciesList = async (req, res) => {
     try {
-        const { name, cost, duration, category_id, description, status } = req.body;
+        const { name, cost, duration, category, description, status } = req.body;
         const polociesCode = await generateCatId();
 
-        const createPoliciesList = await PoliciesList.create({ code: polociesCode, name, cost, duration, category_id, description, status });
+        const createPoliciesList = await PoliciesList.create({ code: polociesCode, name, cost, duration, category, description, status });
         return res.status(201).json({ mesage: "New PoliciesList Information Added", data: createPoliciesList });
     } catch (error) {
         console.error(error);
@@ -30,29 +28,12 @@ const addPoliciesList = async (req, res) => {
 const getPoliciesList = async (req, res) => {
     try {
         const data = await PoliciesList.find();
-        let newData = [];
-
-        if (data) {
-            for (const value of data) {
-                let newDoc = { ...value._doc };
-                var cat_id = new mongoose.Types.ObjectId(value.category_id);
-                const category = await CategoryList.findById(cat_id);
-                if (category) {
-                    newDoc.category = { ...category._doc };
-                }
-                newData.push(newDoc);
-            }
-        }
-
-        console.log(newData, "newData");
-
-        return res.status(200).json({ message: "Get All PoliciesList Information", data: newData });
+        return res.status(200).json({ mesage: "Get All PoliciesList Information", data: data });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Internal Server Error", errorMessage: error });
+        return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
     }
-};
-
+}
 
 const delPoliciesList = async (req, res) => {
     try {
@@ -71,8 +52,9 @@ const editPoliciesList = async (req, res) => {
     try {
         const id = req.params.id;
         const existInformation = await PoliciesList.findById(id);
-        const { name, cost, duration, category_id, description, status } = req.body;
-        const editInformation = await PoliciesList.findByIdAndUpdate(id, { code: existInformation.code, name, cost, duration, category_id, description, status }, { new: true });
+        if (!existInformation) return res.status(400).json({ mesage: "PoliciesList Information Not Exist" });
+        const { name, cost, duration, category, description, status } = req.body;
+        const editInformation = await PoliciesList.findByIdAndUpdate(id, { code: existInformation.code, name, cost, duration, category, description, status }, { new: true });
         return res.status(200).json({ mesage: "Update PoliciesList Information", data: editInformation });
     } catch (error) {
         console.error(error);
