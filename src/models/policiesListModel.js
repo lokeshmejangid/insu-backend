@@ -14,7 +14,7 @@ const policiesListSchema = new mongoose.Schema({
         required: true
     },
     duration: {
-        type: String,
+        type: Number,
         required: true
     },
     category: {
@@ -27,10 +27,6 @@ const policiesListSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean,
-        required: true
-    },
-    policiesDoc: {
-        type: String,
         required: true
     }
 }, { timestamps: true })
