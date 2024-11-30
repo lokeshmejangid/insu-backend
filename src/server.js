@@ -11,6 +11,7 @@ const categoryListRouter = require("./routes/categoryListRouter");
 const policiesListRouter = require("./routes/policiesListRouter");
 const clientListRouter = require("./routes/clientListRouter");
 const insuranceRouter = require("./routes/insuranceRouter");
+const dashboardRouter = require("./routes/dashboardRouter");
 
 const corOptions = {
     origin: "*",
@@ -29,6 +30,7 @@ server.use('/api/category', categoryListRouter);
 server.use('/api/policies', policiesListRouter);
 server.use('/api/client', clientListRouter);
 server.use('/api/insurance', insuranceRouter);
+server.use('/api/dashboard', dashboardRouter);
 
 
 
