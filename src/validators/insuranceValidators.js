@@ -8,7 +8,8 @@ const insuranceSchema = z.object({
     expiryDate: z.string().trim().max(300, "name max 300 characters long"),
     vehicleChassisNo: z.string().max(300, "name max 300 characters long"),
     vehicleModal: z.string().max(300, "name max 300 characters long"),
-    status: z.boolean()
+    status: z.string(),
+    document: z.string().max(300, "name max 300 characters long"),
 })
 
 module.exports = { insuranceSchema }

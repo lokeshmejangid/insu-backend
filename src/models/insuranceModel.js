@@ -23,7 +23,7 @@ const insuranceSchema = new mongoose.Schema({
     },
     expiryDate: {
         type: String,
-        required: false
+        required: true
     },
     vehicleChassisNo: {
         type: String,
@@ -31,10 +31,14 @@ const insuranceSchema = new mongoose.Schema({
     },
     vehicleModal: {
         type: String,
-        required: false
+        required: true
     },
     status: {
-        type: Boolean,
+        type: String,
+        required: true
+    },
+    document: {
+        type: String,
         required: true
     }
 }, { timestamps: true })
