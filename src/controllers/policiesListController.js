@@ -14,16 +14,29 @@ const generateCatId = async () => {
 
 const addPoliciesList = async (req, res) => {
     try {
-        const { name, cost, duration, category, description, status } = req.body;
+        const { name, cost, duration, category_id, description, status } = req.body;
+        console.log(req.body);
         const polociesCode = await generateCatId();
 
-        const createPoliciesList = await PoliciesList.create({ code: polociesCode, name, cost, duration, category, description, status });
+        const createPoliciesList = await PoliciesList.create({ code: polociesCode, name, cost, duration, category_id, description, status });
         return res.status(201).json({ mesage: "New PoliciesList Information Added", data: createPoliciesList });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
     }
 }
+// const addPoliciesList = async (req, res) => {
+//     try {
+//         console.log('Received body:', req.body);  // Log to check if body is being parsed correctly
+//         const { name, cost, duration, category_id, description, status } = req.body;
+//         console.log('Validated data:', { name, cost, duration, category_id, description, status });
+
+//         // The rest of the logic...
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
+//     }
+// };
 
 const getPoliciesList = async (req, res) => {
     try {

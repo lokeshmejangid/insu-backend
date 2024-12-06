@@ -1,12 +1,17 @@
 const fs = require("fs")
 const validate = (schema, imageOptional = false) => async (req, res, next) => {
     try {
+        // Log the incoming body before validation
+        console.log('Request body before validation:', req.body);
+
         const dataToValidate = {
             ...req.body,
             image: req.file ? req.file.path : req.body.image,
             policiesDoc: req.file ? req.file.path : req.body.policiesDoc,
             document: req.file ? req.file.path : req.body.document
         };
+
+        console.log('Data being validated:', dataToValidate);  // Log the merged data
 
         if (imageOptional && !dataToValidate.image) {
             delete dataToValidate.image;
@@ -24,12 +29,7 @@ const validate = (schema, imageOptional = false) => async (req, res, next) => {
         req.body = parsedData;
         next();
     } catch (err) {
-        console.error(err);
-        if (req.file) {
-            fs.unlink(req.file.path, async (er) => {
-                if (er) return res.status(500).json({ message: 'Failed to delete old file from server', error: er.message });
-            });
-        }
+        console.error('Validation error:', err);
         const errorDetails = err.errors || [];
         const extraDetails = errorDetails.map(e => e.message).join(", ");
 
@@ -42,5 +42,6 @@ const validate = (schema, imageOptional = false) => async (req, res, next) => {
         res.status(400).json(error);
     }
 };
+
 
 module.exports = validate;

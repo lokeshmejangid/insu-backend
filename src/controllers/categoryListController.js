@@ -28,7 +28,7 @@ const addCategoryList = async (req, res) => {
 const getCategoryList = async (req, res) => {
     try {
         const data = await CategoryList.find();
-        return res.status(200).json({ mesage: "Get All CategoryList Information", data: data });
+        return res.status(200).json({ message: "All Categories", data: data });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
