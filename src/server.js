@@ -34,8 +34,6 @@ server.use('/api/insurance', insuranceRouter);
 server.use('/api/dashboard', dashboardRouter);
 server.use('/api/transactions', transactionsRouter);
 
-
-
 server.get("/", (req, res) => {
     return res.render("index");
 });
