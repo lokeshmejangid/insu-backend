@@ -2,15 +2,39 @@ const PoliciesList = require("../models/policiesListModel");
 const fs = require('fs');
 
 const generateCatId = async () => {
+    // Get the latest policy entry sorted by creation date
     const policies = await PoliciesList.find().sort({ createdAt: -1 }).limit(1);
 
-    const idNum = policies.length != 0 ? Number(policies[0].code.split('-')[1]) + 1 : 1;
+    // Default to '00001' if no previous policies exist
+    let idNum = 1;
+
+    if (policies.length !== 0) {
+        // Extract the counter part from the last policy code
+        const lastPolicyCode = policies[0].code;
+        const parts = lastPolicyCode.split('-');
+
+        if (parts.length === 2) {
+            // Ensure the second part is a valid number
+            const lastCounter = parseInt(parts[1], 10);
+            if (!isNaN(lastCounter)) {
+                idNum = lastCounter + 1;
+            }
+        }
+    }
+
+    // Get the current year and month
     const today = new Date();
     const yy = today.getFullYear();
-    const mm = today.getMonth() + 1;
-    let formattedCounter = idNum.toString().padStart(5, '0');
-    return yy + "" + mm + "-" + formattedCounter
-}
+    const mm = (today.getMonth() + 1).toString().padStart(2, '0'); // Ensure month is 2 digits
+
+    // Format the policy code with 5-digit counter
+    const formattedCounter = idNum.toString().padStart(5, '0');
+
+    // Return the final policy code
+    return `${yy}${mm}-${formattedCounter}`;
+};
+
+
 
 const addPoliciesList = async (req, res) => {
     try {
