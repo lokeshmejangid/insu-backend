@@ -64,14 +64,11 @@ const getPoliciesList = async (req, res) => {
                 var category_id = new mongoose.Types.ObjectId(value.category_id);
                 const category = await CategoryList.findById(category_id);
                 if (category) {
-                    newDoc.client = { ...category._doc };
+                    newDoc.category = { ...category._doc };
                 }
                 newData.push(newDoc);
             }
         }
-        console.log(newData);
-
-        //const data = await PoliciesList.find();
         return res.status(200).json({ message: "All Policies", data: newData });
     } catch (error) {
         console.error(error);
