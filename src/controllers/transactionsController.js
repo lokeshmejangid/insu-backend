@@ -26,7 +26,7 @@ const getTransactions = async (req, res) => {
         }
 
 
-        return res.status(200).json({ message: "Get All Insurance Information", data: newData });
+        return res.status(200).json({ message: "All Transations", data: newData });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Internal Server Error", errorMessage: error });

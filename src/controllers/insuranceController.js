@@ -76,10 +76,10 @@ const delInsurance = async (req, res) => {
         }
 
         const deletedInformation = await Insurance.findByIdAndDelete(id);
-        return res.status(200).json({ mesage: "Deleted Insurance", data: deletedInformation });
+        return res.status(200).json({ message: "Deleted Insurance", data: deletedInformation });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
+        return res.status(500).json({ message: "Internal Server Error", errorMessage: error });
     }
 };
 
