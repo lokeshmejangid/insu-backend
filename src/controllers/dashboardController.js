@@ -1,7 +1,6 @@
 const ClientList = require("../models/clientListModel");
 const Insurance = require("../models/insuranceModel");
 const PoliciesList = require("../models/policiesListModel");
-const moment = require("moment"); // Install moment.js for date handling
 
 const getDashboard = async (req, res) => {
     try {
@@ -27,11 +26,8 @@ const getDashboard = async (req, res) => {
             createdAt: { $gte: new Date(`${currentYear}-01-01`), $lte: new Date(`${currentYear}-12-31`) }, // Filter policies created this year
         });
 
-        const monthlyBarData = Array(12).fill(0).map((_, index) => ({
-            name: moment().month(index).format("MMM"), // Month name (e.g., "Jan", "Feb")
-            Active: 0,
-            Inactive: 0,
-        }));
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const monthlyBarData = months.map((month) => ({ name: month, Active: 0, Inactive: 0 }));
 
         policies.forEach((policy) => {
             const month = new Date(policy.createdAt).getMonth(); // Get month index (0 for Jan, 11 for Dec)
@@ -50,11 +46,7 @@ const getDashboard = async (req, res) => {
             createdAt: { $gte: new Date(`${currentYear}-01-01`), $lte: new Date(`${currentYear}-12-31`) },
         });
 
-        const monthlyLineData = Array(12).fill(0).map((_, index) => ({
-            month: moment().month(index).format("MMM"), // Month name
-            Clients: 0,
-            Policies: 0,
-        }));
+        const monthlyLineData = months.map((month) => ({ month, Clients: 0, Policies: 0 }));
 
         // Count clients added per month
         clientsData.forEach((client) => {
