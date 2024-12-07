@@ -8,11 +8,11 @@ const addClientList = async (req, res) => {
         const { name, phoneNumber, policy_id, status } = req.body;
         
         const createClientList = await ClientList.create({ name, phoneNumber, policy_id, status });
-        return res.status(201).json({ mesage: "Client Added", data: createClientList });
+        return res.status(201).json({ message: "Client Added", data: createClientList });
 
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
+        return res.status(500).json({ message: "Internal Server Error", errorMessage: error });
     }
 }
 
@@ -32,10 +32,10 @@ const getClientList = async (req, res) => {
                 newData.push(newDoc);
             }
         }
-        return res.status(200).json({ mesage: "All Clients", data: newData });
+        return res.status(200).json({ message: "All Clients", data: newData });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
+        return res.status(500).json({ message: "Internal Server Error", errorMessage: error });
     }
 }
 
@@ -43,12 +43,12 @@ const delClientList = async (req, res) => {
     try {
         const id = req.params.id;
         const existInformation = await ClientList.findById(id);
-        if (!existInformation) return res.status(400).json({ mesage: "Client Not Exist" });
+        if (!existInformation) return res.status(400).json({ message: "Client Not Exist" });
         const deletedInformation = await ClientList.findByIdAndDelete(id);
-        return res.status(200).json({ mesage: "Deleted Client", data: deletedInformation });
+        return res.status(200).json({ message: "Deleted Client", data: deletedInformation });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
+        return res.status(500).json({ message: "Internal Server Error", errorMessage: error });
     }
 }
 
@@ -57,14 +57,14 @@ const editClientList = async (req, res) => {
         const id = req.params.id;
         const existInformation = await ClientList.findById(id);
         if (!existInformation) {
-            return res.status(400).json({ mesage: "Client Not Exist" });
+            return res.status(400).json({ message: "Client Not Exist" });
         }
         const { name, phoneNumber, policy_id, status } = req.body;
         const editInformation = await ClientList.findByIdAndUpdate(id, {name, phoneNumber, policy_id, status }, { new: true });
-        return res.status(200).json({ mesage: "Updated Client", data: editInformation });
+        return res.status(200).json({ message: "Updated Client", data: editInformation });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ mesage: "Internal Server Error", errorMessage: error });
+        return res.status(500).json({ message: "Internal Server Error", errorMessage: error });
     }
 }
 
