@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const insuranceSchema = new mongoose.Schema({
-    refCode: {
-        type: String,
-        required: true
-    },
     clientId: {
         type: String,
         required: true
@@ -34,12 +30,12 @@ const insuranceSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: String,
+        type: Boolean,
         required: true
     },
     document: {
         type: String,
-        required: true
+        required: false
     }
 }, { timestamps: true })
 
