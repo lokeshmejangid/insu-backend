@@ -64,7 +64,7 @@ const getDashboard = async (req, res) => {
         dashboardData.lineChartData = monthlyLineData;
 
         return res.status(200).json({
-            message: "Dashboard Data Retrieved Successfully",
+            message: "Dashboard Stats",
             data: dashboardData,
         });
     } catch (error) {

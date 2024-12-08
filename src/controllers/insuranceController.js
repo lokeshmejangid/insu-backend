@@ -97,10 +97,7 @@ const editInsurance = async (req, res) => {
             return res.status(400).json({ message: "Insurance Not Exist" });
         }
 
-        const { clientId, vehicleRegNo, insurancePolicyId, registrationDate, expiryDate, vehicleChassisNo, vehicleModal, status } = req.body;
-
-        // Ensure the status is a string
-        const insuranceStatus = status === 'true'; // Converts "true" or "false" string to boolean
+        const { clientId, vehicleRegNo, insurancePolicyId, registrationDate, expiryDate, vehicleChassisNo, vehicleModal, status } = req.body;        
         
         // If a new document is uploaded, handle it
         let document = req.file ? req.file.path : existInformation.document; // If no new file, keep the old one
@@ -121,7 +118,7 @@ const editInsurance = async (req, res) => {
             expiryDate, 
             vehicleChassisNo, 
             vehicleModal, 
-            status: insuranceStatus, 
+            status, 
             document
         }, { new: true });
 
