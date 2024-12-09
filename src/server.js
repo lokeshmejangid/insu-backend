@@ -47,8 +47,9 @@ server.get("/", (req, res) => {
 const httpServer = http.createServer(server);
 const io = new Server(httpServer, {
     cors: {
-        origin: "*",
+        origin: "https://insu-backend-9dr5.onrender.com",
         methods: ["GET", "POST"],
+        credentials: true
     },
 });
 
