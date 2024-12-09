@@ -19,7 +19,7 @@ const transactionsRouter = require("./routes/transactionsRouter");
 const corOptions = {
     origin: "*",
     methods: "POST, GET, PUT, DELETE",
-    Credential: true
+    credentials: true
 }
 
 const server = express();
