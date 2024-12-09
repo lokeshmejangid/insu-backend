@@ -47,10 +47,11 @@ server.get("/", (req, res) => {
 const httpServer = http.createServer(server);
 const io = new Server(httpServer, {
     cors: {
-        origin: "https://insu-backend-9dr5.onrender.com",
+        origin: ["http://localhost:3000", "https://insu-backend-9dr5.onrender.com"], // Allow both localhost and production URLs
         methods: ["GET", "POST"],
-        credentials: true
-    },
+        allowedHeaders: ["Content-Type"],
+        credentials: true, // Allow credentials if needed
+      },
 });
 
 // Socket.io logic
