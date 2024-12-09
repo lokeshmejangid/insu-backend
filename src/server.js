@@ -51,7 +51,7 @@ const io = new Server(httpServer, {
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type"],
         credentials: true, // Allow credentials if needed
-      },
+    },
 });
 
 // Socket.io logic
@@ -66,53 +66,57 @@ io.on("connection", (socket) => {
 // Function to check for expiring insurances
 const checkExpiringInsurances = async () => {
     const today = new Date();
-    
-    // Format today's date as YYYY-MM-DD (ignoring time)
     const formattedToday = today.toISOString().split('T')[0];
+
+    const next7Days = new Date(today);
+    next7Days.setDate(today.getDate() + 7);
+    const formattedNext7Days = next7Days.toISOString().split('T')[0];
+
     console.log("Today's Date:", formattedToday);
-  
+    console.log("Checking for insurances expiring between:", formattedToday, "and", formattedNext7Days);
+
     try {
-      // Find insurances that are expiring 7 days from today
-      const next7Days = new Date(today);
-      next7Days.setDate(today.getDate() + 7);
-      const formattedNext7Days = next7Days.toISOString().split('T')[0]; // Get date only, no time part
-  
-      console.log("Checking for insurances expiring between:", formattedToday, "and", formattedNext7Days);
-  
-      // Find insurances expiring between today and the next 7 days
-      const expiringInsurances = await Insurance.find({
-        expiryDate: { $gte: formattedToday, $lte: formattedNext7Days },
-      })
-      .populate("clientId") // Populate the client data based on the `clientId` field
-      .exec();
-  
-      console.log("Expiring Insurances Found:", expiringInsurances);
-  
-      if (expiringInsurances.length > 0) {
-        // Emit notifications for each expiring insurance
-        expiringInsurances.forEach((insurance) => {
-          // Ensure that `clientId` has been populated
-          const client = insurance.clientId;
-          if (client) {
-            io.emit("insurance-expiry-notification", {
-              message: `Insurance for ${client.name || "Unknown"} (Vehicle: ${insurance.vehicleRegNo}) is expiring in 7 days on ${insurance.expiryDate}`,
-              expiryDate: insurance.expiryDate,
-              client: {
-                name: client.name,
-                email: client.email, // Example of including other client data
-                phone: client.phone, // You can include other fields as needed
-              },
-            });
-          }
-        });
-        console.log("Notifications sent for expiring insurances.");
-      } else {
-        console.log("No expiring insurances found.");
-      }
+        // Query for insurances expiring in the next 7 days
+        const expiringInsurances = await Insurance.find({
+            expiryDate: { $gte: formattedToday, $lte: formattedNext7Days },
+        }).exec();
+
+        console.log("Expiring Insurances Found:", expiringInsurances);
+
+        if (expiringInsurances.length > 0) {
+            for (const insurance of expiringInsurances) {
+                const clientId = insurance.clientId; // `clientId` is a string
+                if (clientId) {
+                    // Fetch the client data using the clientId string
+                    const client = await Client.findOne({ _id: clientId }).exec();
+
+                    if (client) {
+                        const notification = {
+                            message: `Insurance for ${client.name || "Unknown"} (Vehicle: ${insurance.vehicleRegNo}) is expiring in 7 days on ${insurance.expiryDate}`,
+                            expiryDate: insurance.expiryDate,
+                            client: {
+                                name: client.name,
+                                phone: client.phoneNumber,
+                            },
+                        };
+
+                        console.log("Emitting notification:", notification); // Debug log
+                        io.emit("insurance-expiry-notification", notification);
+                    } else {
+                        console.log(`Client not found for clientId: ${clientId}`);
+                    }
+                } else {
+                    console.log(`No clientId found for insurance: ${insurance._id}`);
+                }
+            }
+            console.log("Notifications sent for expiring insurances.");
+        } else {
+            console.log("No expiring insurances found.");
+        }
     } catch (error) {
-      console.error("Error fetching expiring insurances:", error);
+        console.error("Error fetching expiring insurances:", error);
     }
-  };
+};
 
 // Schedule the task to run every day at midnight (UTC)
 //cron.schedule("0 0 * * *", checkExpiringInsurances);
