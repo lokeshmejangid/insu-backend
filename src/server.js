@@ -47,7 +47,7 @@ server.get("/", (req, res) => {
 const httpServer = http.createServer(server);
 const io = new Server(httpServer, {
     cors: {
-        origin: ["http://localhost:3000", "https://insu-backend-9dr5.onrender.com"], // Allow both localhost and production URLs
+        origin: ["http://localhost:3000", "https://insu-frontend.vercel.app/"], // Allow both localhost and production URLs
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type"],
         credentials: true, // Allow credentials if needed
