@@ -17,10 +17,11 @@ const dashboardRouter = require("./routes/dashboardRouter");
 const transactionsRouter = require("./routes/transactionsRouter");
 
 const corOptions = {
-    origin: "*",
-    methods: "POST, GET, PUT, DELETE",
-    credentials: true
-}
+    origin: ["http://localhost:3000", "https://insu-frontend.vercel.app/"], // Allow localhost (dev) and deployed frontend
+    methods: ["POST", "GET", "PUT", "DELETE"], // HTTP methods allowed
+    allowedHeaders: ["Content-Type"], // Headers allowed
+    credentials: true, // Send cookies with requests
+};
 
 const server = express();
 const PORT = 9000;
@@ -46,12 +47,7 @@ server.get("/", (req, res) => {
 // Initialize HTTP server for socket.io
 const httpServer = http.createServer(server);
 const io = new Server(httpServer, {
-    cors: {
-        origin: ["http://localhost:3000", "https://insu-frontend.vercel.app/"], // Allow both localhost and production URLs
-        methods: ["GET", "POST"],
-        allowedHeaders: ["Content-Type"],
-        credentials: true, // Allow credentials if needed
-    },
+    cors: corOptions,
 });
 
 // Socket.io logic
